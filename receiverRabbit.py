@@ -6,9 +6,11 @@ config = ConfigParser.RawConfigParser()
 config.read('credentials.properties')
 rabbitUser=config.get('user1', 'username');
 rabbitPassword=config.get('user1', 'password');
+rabbitServer=config.get('rabbit', 'server');
+rabbitPort=config.get('rabbit', 'port');
 credentials = pika.PlainCredentials(rabbitUser, rabbitPassword)
 
-connection = pika.BlockingConnection(pika.ConnectionParameters('beredo.cs.umu.se',5672,'/',credentials))
+connection = pika.BlockingConnection(pika.ConnectionParameters(rabbitServer,rabbitPort,'/',credentials))
 channel = connection.channel()
 
 channel.queue_declare(queue='hello')
