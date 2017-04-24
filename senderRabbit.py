@@ -3,10 +3,13 @@ import pika
 import ConfigParser
 config = ConfigParser.RawConfigParser()
 config.read('credentials.properties')
-rabbitUser=config.get('user1', 'username');
-rabbitPassword=config.get('user1', 'password');
+
 rabbitServer=config.get('rabbit', 'server');
 rabbitPort=config.get('rabbit', 'port');
+
+rabbitUser=config.get('user1', 'username');
+rabbitPassword=config.get('user1', 'password');
+
 credentials = pika.PlainCredentials(rabbitUser, rabbitPassword)
 
 connection = pika.BlockingConnection(pika.ConnectionParameters(rabbitServer,rabbitPort,'/',credentials))
