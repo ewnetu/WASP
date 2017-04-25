@@ -16,7 +16,7 @@ credentials = pika.PlainCredentials(rabbitUser, rabbitPassword)
 connection = pika.BlockingConnection(pika.ConnectionParameters(rabbitServer,rabbitPort,'/',credentials))
 channel = connection.channel()
 
-channel.queue_declare(queue='hello')
+channel.queue_declare(queue='wasp')
 
 def callback(ch, method, properties, body):
     print(" [x] Received %r" % body)
