@@ -21,8 +21,8 @@ class OpenStackVMOperations:
         self.sess = session.Session(auth=self.auth)
         self.nova = NovaClient("2", session=self.sess)
         
-    def monitoringInfo( start_date, end_date):
-        usage = self.nova.usage.get( self.tenantNname, start_date, end_date)
+    def monitoringInfo( self,  start_date, end_date):
+        usage = self.nova.usage.get( self.tenantName, start_date, end_date)
         print usage
     
     
@@ -50,8 +50,8 @@ class OpenStackVMOperations:
             nova.servers.delete(instance)
             print("server %s deleted" % VMName)
         
-    def listFloatingIPs():
-        ip_list = nova.floating_ips.list()
+    def listFloatingIPs(self):
+        ip_list = self.nova.floating_ips.list()
         for ip in ip_list:
              print("fixed_ip : %s\n" % ip.fixed_ip)
              print("ip : %s" % ip.ip)
@@ -73,8 +73,8 @@ class OpenStackVMOperations:
     
     def getVMIP(self,VMName):
         instance = self.nova.servers.find(name=VMName)
-        ip = instance.networks
-        print ("ipaddress:" + ip)
+        
+        print("user network info: %s\n" % instance.networks)
         
         
     def getVMDetail(self,VMName):
@@ -85,7 +85,7 @@ class OpenStackVMOperations:
         print("server flavor: %s\n" % instance.flavor)
         print("server key name: %s\n" % instance.key_name)
         print("user_id: %s\n" % instance.user_id)
-        print("user_id: %s\n" % instance.networks)
+        print("user network info: %s\n" % instance.networks)
      
     def  getOperation(self, args): 
         if args.operation == "listIP":
@@ -98,8 +98,11 @@ class OpenStackVMOperations:
             self.terminateVM(args.name)
         elif args.operation == "assignFIP":
             self.createFloatingIP(args.name)
+        elif args.operation == "VMIP":
+            self.getVMIP(args.name)
         elif args.operation == "monitor":
-            self.createVM(args.name)
+            self.monitoringInfo(datetime.datetime.strptime('2017-04-04 00:00:00',"%Y-%m-%d %H:%M:%S"),datetime.datetime.strptime('2017-04-05 00:00:00',"%Y-%m-%d %H:%M:%S"))
+     
    
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -107,7 +110,7 @@ if __name__ == '__main__':
         metavar = "VM_OPERATION",
         help = "The operation that you want to perform",
         required = True,
-        choices=["create","listVM","terminate","listIP","assignFIP","monitor"],
+        choices=["create","listVM","VMIP","terminate","listIP","assignFIP","monitor"],
         dest="operation")
 
     parser.add_argument("-n", "--name",
@@ -117,4 +120,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
     ops =OpenStackVMOperations()
     ops.getOperation(args)
+    
+    
     
