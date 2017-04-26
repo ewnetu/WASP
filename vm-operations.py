@@ -67,15 +67,16 @@ class OpenStackVMOperations:
             print("server flavor: %s\n" % instance.flavor)
             print("server key name: %s\n" % instance.key_name)
             print("user_id: %s\n" % instance.user_id)
-            print("user_id: %s\n" % instance.networks)
+            print("network info (mac + ip) : %s\n" % instance.networks)
             print("########################## #################\n\n")
           
     
     def getVMIP(self,VMName):
         instance = self.nova.servers.find(name=VMName)
-        
-        print("user network info: %s\n" % instance.networks)
-        
+    
+        print("Network address info: %s\n" % instance.addresses)
+        print("fixed ip: %s\n" % instance.networks[self.tenantName])
+    
         
     def getVMDetail(self,VMName):
         instance = self.nova.servers.find(name=VMName)
@@ -120,6 +121,3 @@ if __name__ == '__main__':
     args = parser.parse_args()
     ops =OpenStackVMOperations()
     ops.getOperation(args)
-    
-    
-    
