@@ -1,5 +1,5 @@
 # WASP
-This is prepared as a tutorial for  <a href="http://wasp-sweden.org/graduate-school/courses/software-engineering-and-cloud-computing/cloud-computing/"> Cloud Computing</a> course which is offered under  the WASP Graduate School in Umeå University[2017].
+This is prepared as a tutorial for  <a href="http://wasp-sweden.org/graduate-school/courses/software-engineering-and-cloud-computing/cloud-computing/"> Cloud Computing</a> course which is offered under  the WASP Graduate School in Umeå University [2017].
 
 rabbitMQ.sh:to setup rabbitMQ server (starting from installation of prequisite libraries to creating users).
 
