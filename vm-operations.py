@@ -11,15 +11,15 @@ class OpenStackVMOperations:
         config.read('config.properties')
         self.openStackUsername=config.get('user', 'username')
         self.openStackPassword=config.get('user', 'password')
-        self.tenantName=config.get('cloud', 'projectName')
-        self.openStackAuthUrl=config.get('authUrl', 'password')
+        self.tenantName=config.get('openstack', 'projectName')
+        self.openStackAuthUrl=config.get('openstack','authUrl')
        
     def __init__(self):
         self.readConf()
         self.auth = v2.Password(username=self.openStackUsername, password=self.openStackPassword,
-                                 tenant_name=self.tenantNname, auth_url= self.openStackAuthUrl)
-        self.sess = session.Session(auth=auth)
-        self.nova = NovaClient("2", session=sess)
+                                 tenant_name=self.tenantName, auth_url= self.openStackAuthUrl)
+        self.sess = session.Session(auth=self.auth)
+        self.nova = NovaClient("2", session=self.sess)
         
     def monitoringInfo( start_date, end_date):
         usage = self.nova.usage.get( self.tenantNname, start_date, end_date)
@@ -57,9 +57,9 @@ class OpenStackVMOperations:
              print("ip : %s" % ip.ip)
              print("instance_id : %s" % ip.instance_id)
     
-    def listVMs():
-        vm_list = nova.servers.list()
-        for vm in vm_list:
+    def listVMs(self):
+        vm_list = self.nova.servers.list()
+        for instance in vm_list:
             print("########################## #################\n")
             print("server id: %s\n" % instance.id)
             print("server name: %s\n" % instance.name)
@@ -72,13 +72,13 @@ class OpenStackVMOperations:
           
     
     def getVMIP(self,VMName):
-        instance = nova.servers.find(name=VMName)
+        instance = self.nova.servers.find(name=VMName)
         ip = instance.networks
         print ("ipaddress:" + ip)
         
         
     def getVMDetail(self,VMName):
-        instance = nova.servers.find(name=VMName)
+        instance = self.nova.servers.find(name=VMName)
         print("server id: %s\n" % instance.id)
         print("server name: %s\n" % instance.name)
         print("server image: %s\n" % instance.image)
