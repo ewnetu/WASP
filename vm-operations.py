@@ -14,6 +14,7 @@ class OpenStackVMOperations:
         self.tenantName=config.get('openstack', 'projectName')
         self.openStackAuthUrl=config.get('openstack','authUrl')
         self.openStackKeyName=config.get('openstack','keyName')
+        self.openStackNetId=config.get('openstack','netId')
        
     def __init__(self):
         self.readConf()
@@ -38,7 +39,7 @@ class OpenStackVMOperations:
      # nova.servers.list()
         image = self.nova.images.find(name="Ubuntu 16.04 LTS")  # nova.images.find(name="Test") #
         flavor = self.nova.flavors.find(name="m1.medium")
-        net = self.nova.networks.find(label="CloudCourse")
+        net = self.nova.networks.find(label=self.openStackNetId)
         nics = [{'net-id': net.id}]
         vm = self.nova.servers.create(name=VMName, image=image, flavor=flavor, key_name=self.openStackKeyName, nics=nics, userdata=open("vm-init.sh"))
     
@@ -76,7 +77,7 @@ class OpenStackVMOperations:
         instance = self.nova.servers.find(name=VMName)
     
         print("Network address info: %s\n" % instance.addresses)
-        print("fixed ip: %s\n" % instance.networks[self.tenantName])
+        print("fixed ip: %s\n" % instance.networks[self.openStackNetId])
     
         
     def getVMDetail(self,VMName):
