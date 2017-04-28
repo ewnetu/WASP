@@ -13,6 +13,7 @@ class OpenStackVMOperations:
         self.openStackPassword=config.get('user', 'password')
         self.tenantName=config.get('openstack', 'projectName')
         self.openStackAuthUrl=config.get('openstack','authUrl')
+        self.openStackKeyName=config.get('openstack','keyName')
        
     def __init__(self):
         self.readConf()
@@ -39,7 +40,7 @@ class OpenStackVMOperations:
         flavor = self.nova.flavors.find(name="m1.medium")
         net = self.nova.networks.find(label="CloudCourse")
         nics = [{'net-id': net.id}]
-        vm = self.nova.servers.create(name=VMName, image=image, flavor=flavor, key_name="ewnetu", nics=nics, userdata=open("vm-init.sh"))
+        vm = self.nova.servers.create(name=VMName, image=image, flavor=flavor, key_name=self.openStackKeyName, nics=nics, userdata=open("vm-init.sh"))
     
     def terminateVM(self,VMName):
         instance = nova.servers.find(name=VMName)
