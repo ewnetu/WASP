@@ -48,7 +48,7 @@ class OpenStackVMOperations:
         
     def createVM(self, VMName):
      # nova.servers.list()
-        image = self.nova.images.find(name="Ubuntu 16.04")  # nova.images.find(name="Test") #
+        image = self.nova.images.find(name="ubuntu 16.04")  # nova.images.find(name="Test") #
         flavor = self.nova.flavors.find(name="c2m2")
         net = self.nova.networks.find(label=self.openStackNetId)
         nics = [{'net-id': net.id}]
