@@ -1,4 +1,4 @@
-from keystoneauth1.identity import v2
+from keystoneauth1.identity import v3
 from keystoneauth1 import session
 from novaclient.client import Client as NovaClient
 import datetime
@@ -15,11 +15,22 @@ class OpenStackVMOperations:
         self.openStackAuthUrl=config.get('openstack','authUrl')
         self.openStackKeyName=config.get('openstack','keyName')
         self.openStackNetId=config.get('openstack','netId')
+        self.openStackProjectDomainName=config.get('openstack','project_domain_name')
+        self.openStackProjectDomainId=config.get('openstack','project_domain_id')
+        self.openStackUserDomainName=config.get('openstack','user_domain_name')
        
     def __init__(self):
         self.readConf()
-        self.auth = v2.Password(username=self.openStackUsername, password=self.openStackPassword,
-                                 tenant_name=self.tenantName, auth_url= self.openStackAuthUrl)
+        self.auth = v3.Password(
+            username=self.openStackUsername,
+            password=self.openStackPassword,
+            project_name=self.projectName,
+            auth_url= self.openStackAuthUrl,
+            user_domain_name = self.openStackUserDomainName,
+            # domain_name = 'xerces',
+            project_domain_name = self.openStackProjectDomainName,
+            project_id =self.openStackProjectDomainId
+        )
         self.sess = session.Session(auth=self.auth)
         self.nova = NovaClient("2", session=self.sess)
         
