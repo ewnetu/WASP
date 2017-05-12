@@ -11,7 +11,7 @@ class OpenStackVMOperations:
         config.read('config.properties')
         self.openStackUsername=config.get('user', 'username')
         self.openStackPassword=config.get('user', 'password')
-        self.tenantName=config.get('openstack', 'projectName')
+        self.projectName=config.get('openstack', 'projectName')
         self.openStackAuthUrl=config.get('openstack','authUrl')
         self.openStackKeyName=config.get('openstack','keyName')
         self.openStackNetId=config.get('openstack','netId')
@@ -48,8 +48,8 @@ class OpenStackVMOperations:
         
     def createVM(self, VMName):
      # nova.servers.list()
-        image = self.nova.images.find(name="Ubuntu 16.04 LTS")  # nova.images.find(name="Test") #
-        flavor = self.nova.flavors.find(name="m1.medium")
+        image = self.nova.images.find(name="Ubuntu 16.04")  # nova.images.find(name="Test") #
+        flavor = self.nova.flavors.find(name="c2m2")
         net = self.nova.networks.find(label=self.openStackNetId)
         nics = [{'net-id': net.id}]
         vm = self.nova.servers.create(name=VMName, image=image, flavor=flavor, key_name=self.openStackKeyName, nics=nics, userdata=open("vm-init.sh"))
