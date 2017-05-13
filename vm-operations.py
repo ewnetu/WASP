@@ -35,7 +35,7 @@ class OpenStackVMOperations:
         self.nova = NovaClient("2", session=self.sess)
         
     def monitoringInfo( self,  start_date, end_date):
-        usage = self.nova.usage.get( self.tenantName, start_date, end_date)
+        usage = self.nova.usage.get( self.projectName, start_date, end_date)
         print usage
     
     
