@@ -55,12 +55,12 @@ class OpenStackVMOperations:
         vm = self.nova.servers.create(name=VMName, image=image, flavor=flavor, key_name=self.openStackKeyName, nics=nics, userdata=open("vm-init.sh"))
     
     def terminateVM(self,VMName):
-        instance = nova.servers.find(name=VMName)
+        instance = self.nova.servers.find(name=VMName)
         if instance == None :
             print("server %s does not exist" % VMName)
         else:
             print("deleting server..........")
-            nova.servers.delete(instance)
+            self.nova.servers.delete(instance)
             print("server %s deleted" % VMName)
         
     def listFloatingIPs(self):
